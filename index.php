@@ -11,15 +11,17 @@
 
 
 session_start();
-include "view/accueilTemplate.phtml";
 
 
-if(array_key_exists("userName", $_SESSION)==false){
-   include "view/acceuilTemplate.phtml";
-}
-else {
-   //include "view/logoutTemplate.phtml";
-    }
+    require_once("helper/Database.class.php");
+    require_once("model/Article.class.php");
+
+
+    $articleManager = new Model_Article();
+    $articles = $articleManager->getArticles();
+
+    include "view/accueilTemplate.phtml";
+
 
 
 

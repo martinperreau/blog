@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Clean Blog</title>
+    <title>Blog 3WA</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -22,31 +22,42 @@
     <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="../css/style.css"/>
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
+
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
     <style>
-        form, .addusers, .addusers a{
+        form, .addusers, .addusers a, .white,.logout {
             color: #ffffff;
+            text-shadow: 1px 1px black;
         }
         .submit{
             color:#000000;
         }
-        form  {
+        form {
             font-size: 1.3rem;
             text-align: right;
         }
         .addusers {
             text-align: right;
-            padding-right: 1%;
+            padding-right: 2%;
         }
         .input {
             color:#000000;
         }
+
+        .white {
+            font-size: 1.8rem;
+            text-align: right;
+            margin-right: 2%;
+        }
+        .create{
+            color: #0085a1;
+        }
+
+        /*register css*/
+
 
     </style>
 
@@ -65,7 +76,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="index.php">make my day</a>
+            <a class="navbar-brand" href="makeMyDay.php">make my day</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -79,11 +90,21 @@
         <!-- /.navbar-collapse -->
     </div>
 
-    <!--    LOGIN         -->
+
+    <!-- *************   LOGIN     **************    -->
+<?php if(array_key_exists("id", $_SESSION)):?>
+    <h5 class="white">Bonjour <?= $_SESSION["userName"]?><br/>
+
+    <a href="editArticle.php" class="create"> Créer un article </a><br/>
+
+    <a href="logout.php" class="logout" > deconnexion</a></h5>
+
+    <?php else :?>
+
     <div id="form">
     <form action="login.php" method="post">
         <label for="name"> Votre nom</label>
-        <input type="text" name="name" id="name" class="input">
+        <input type="text" name="userName" id="name" class="input">
         <br/>
         <label for="password"> Mot de passe </label>
         <input type="password" name="password" id="password" class="input">
@@ -91,15 +112,19 @@
         <input type="submit" value="Login" class="submit"/>
 
     </form>
-        <h6 class="addusers">Pas de compte ? <a href="addUsers.php">Inscrivez-vous </a>!</h6>
+        <h6 class="addusers">Pas de compte ? <a href="register.php">Inscrivez-vous </a>!</h6>
     </div>
+
+<?php endif ?>
+    <!-- ********* **************    -->
+
 
     <!-- /.container -->
 </nav>
 
 <!-- Page Header -->
 <!-- Set your background image for this header on the line below. -->
-<header class="intro-header" style="background-image: url('img/home-bg.jpg')">
+<header class="intro-header" style="background-image: url('img/canyon.jpg')">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -114,32 +139,33 @@
 </header>
 
 <!-- Main Content -->
+<!-- *****************************ARTICLE ************************** -->
 <div class="container">
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <?php foreach($articles as $cat):     ?>
             <div class="post-preview">
-                <a href="post.html">
+                <a href="article.php?id=<?= $cat["id"] ?>" >
                     <h2 class="post-title">
-                        titre d'article
+                        <?= $cat["title"]; ?>
                     </h2>
-                    <h3 class="post-subtitle">
-                        sous-titre d'article
-                    </h3>
+                    <p class="post-meta">Posté par <?= $cat["id_author"]?> le <?= $cat["date"]?></p>
                 </a>
-                <p class="post-meta">Posté par <a href="#"> user_id</a> le xx/xx/xx</p>
-            </div>
-            <hr>
+                <p> <?= substr($cat["content"],0, 200)." ..."; ?> </p>
+
 
             <!-- Pager -->
+
+        </div>
+            <?php endforeach ?>
+
             <ul class="pager">
                 <li class="next">
                     <a href="#">Older Posts &rarr;</a>
                 </li>
             </ul>
-        </div>
     </div>
 </div>
-
 <hr>
 
 <!-- Footer -->

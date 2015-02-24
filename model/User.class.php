@@ -6,8 +6,7 @@
  * Time: 16:21
  */
 
-
-class User
+class Model_User
 {
     private $db;
 
@@ -16,12 +15,23 @@ class User
         $this->db = new Helper_Database();
     }
 
-    public function verifLogin($userName, $password)
+    public function verifLogin($login, $password)
     {
-        // récupérer l'utilisateur ayant pour login "$login" -> le stocker dans une variable $user
-        // si le mot de passe en db correspond au mot de passe entré dans le formulaire
-        // -> return $user
-        // sinon
-        // -> return false
+        $query = "SELECT * FROM users WHERE userName = :userName";
+        $data = array("userName" => $login);
+        $user = $this->db->fetchOne($query, $data);
+        if (password_verify($password, $user["password"])) {
+            $_SESSION["id"] = $user["id"];
+            $_SESSION["password"] = $user["password"];
+            $_SESSION["userName"] = $user["userName"];
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function logout()
+    {
+        session_destroy();
     }
 }
